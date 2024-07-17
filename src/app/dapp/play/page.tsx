@@ -1,6 +1,9 @@
 "use client";
 
+import { Participate } from "@/components/Participate";
+import { Reset } from "@/components/Reset";
 import useLotteryContractRead from "@/hooks/useLotteryContractRead";
+import { Text } from "@chakra-ui/react";
 
 export default function Play() {
   const methodName = "lotteryOpen";
@@ -11,5 +14,11 @@ export default function Play() {
       methodParams,
       watch: true,
     });
-  return <>Play Lottery: {"" + data}</>;
+  return (
+    <>
+      <Text>Play Lottery: {"" + data}</Text>
+      <Participate />
+      <Reset />
+    </>
+  );
 }
