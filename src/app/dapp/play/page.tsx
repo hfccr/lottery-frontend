@@ -1,8 +1,10 @@
 "use client";
 
+import { CloseLottery } from "@/components/CloseLottery";
 import { Participants } from "@/components/Participants";
 import { Participate } from "@/components/Participate";
 import { Reset } from "@/components/Reset";
+import { Winners } from "@/components/Winners";
 import useLotteryContractRead from "@/hooks/useLotteryContractRead";
 import { Text } from "@chakra-ui/react";
 
@@ -21,6 +23,9 @@ export default function Play() {
       <Participate />
       <Reset />
       <Participants />
+      <CloseLottery />
+      <Text>Winners</Text>
+      <Winners />
     </>
   );
 }
