@@ -1,7 +1,6 @@
 "use client";
 import useLotteryContractWrite from "@/hooks/useLotteryContractWrite";
 import { Alert, Button, Skeleton } from "@chakra-ui/react";
-import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 
 export function Reset() {
   const { write, writeStatus } = useLotteryContractWrite();
