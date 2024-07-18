@@ -8,7 +8,7 @@ import {
   useWeb3ModalProvider,
 } from "@web3modal/ethers/react";
 
-const interval = 10000;
+const interval = 20000;
 
 interface UseLotteryContractReadProps {
   methodName: string;
