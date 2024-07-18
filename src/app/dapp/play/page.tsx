@@ -1,5 +1,6 @@
 "use client";
 
+import { Participants } from "@/components/Participants";
 import { Participate } from "@/components/Participate";
 import { Reset } from "@/components/Reset";
 import useLotteryContractRead from "@/hooks/useLotteryContractRead";
@@ -19,6 +20,7 @@ export default function Play() {
       <Text>Play Lottery: {"" + data}</Text>
       <Participate />
       <Reset />
+      <Participants />
     </>
   );
 }
