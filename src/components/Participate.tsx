@@ -8,24 +8,81 @@ import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 export function Participate() {
   const { address } = useWeb3ModalAccount();
   const {
-    success,
-    error,
-    fetching,
-    errorMessage,
+    success: isAlreadyParticipatingSuccess,
+    error: isAlreadyParticipatingError,
+    fetching: isAlreadyParticipatingFetching,
     data: isAlreadyParticipating,
   } = useLotteryContractRead({
     methodName: "isAlreadyParticipating",
     methodParams: [address],
     watch: true,
   });
+  const {
+    success: participantCountSuccess,
+    data: participantCount,
+    error: participantCountError,
+    fetching: participantCountFetching,
+  } = useLotteryContractRead({
+    methodName: "participantCount",
+    methodParams: [],
+    watch: true,
+  });
+  const {
+    success: maxParticipantsSuccess,
+    data: maxParticipants,
+    error: maxParticipantsError,
+    fetching: maxParticipantsFetching,
+  } = useLotteryContractRead({
+    methodName: "maxParticipants",
+    methodParams: [],
+    watch: true,
+  });
+  const {
+    success: lotteryOpenSuccess,
+    data: lotteryOpen,
+    error: lotteryOpenError,
+    fetching: lotteryOpenFetching,
+  } = useLotteryContractRead({
+    methodName: "lotteryOpen",
+    methodParams: [],
+    watch: true,
+  });
   const { write, writeStatus } = useLotteryContractWrite();
   const { fetching: writing, success: writeSuccess } = writeStatus;
-  console.log("success");
-  console.log(success);
+  const success =
+    isAlreadyParticipatingSuccess &&
+    participantCountSuccess &&
+    maxParticipantsSuccess &&
+    lotteryOpenSuccess;
+  const error =
+    isAlreadyParticipatingError ||
+    participantCountError ||
+    maxParticipantsError ||
+    lotteryOpenError;
+  const fetching =
+    isAlreadyParticipatingFetching ||
+    participantCountFetching ||
+    maxParticipantsFetching ||
+    lotteryOpenFetching;
+  let participationEnabled = false;
+  let label = "";
+  if (success && participantCount !== null && maxParticipants !== null) {
+    if (!lotteryOpen) {
+      participationEnabled = false;
+      label = "Lottery Drawn";
+    } else if (isAlreadyParticipating) {
+      participationEnabled = false;
+      label = "Already Participating";
+    } else if (participantCount >= maxParticipants) {
+      participationEnabled = false;
+      label = "Max Participants Reached";
+    }
+  }
   return (
     <>
       Is already participating : {isAlreadyParticipating + ""}
-      {success && isAlreadyParticipating === false && (
+      Current Participants : {participantCount + ""} / {maxParticipants + ""}
+      {success && (
         <Button
           onClick={() => {
             write({
@@ -34,15 +91,14 @@ export function Participate() {
               amount: "0.000015",
             });
           }}
+          isDisabled={!participationEnabled}
           isLoading={writing}
         >
-          Participate
+          {label}
         </Button>
       )}{" "}
-      {success && isAlreadyParticipating === true && (
-        <Button isDisabled={true}>Participate</Button>
-      )}{" "}
-      {error && <Alert status="error">{errorMessage}</Alert>}{" "}
+      {error && <Alert status="error">Failed to get participant data</Alert>}{" "}
+      {fetching && !success && !error && <Skeleton height="20px" />}
     </>
   );
 }
