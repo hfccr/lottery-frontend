@@ -104,7 +104,7 @@ export function ClaimPrize() {
         {readError && !readSuccess && !readFetching && (
           <Alert status="error">Failed to read prize data</Alert>
         )}{" "}
-        {readFetching && <Skeleton height={50} />}
+        {readFetching && !readSuccess && <Skeleton height={50} />}
       </StatNumber>
       {readSuccess && <StatHelpText>{label}</StatHelpText>}
     </Stat>

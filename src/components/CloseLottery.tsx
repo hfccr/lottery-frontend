@@ -25,7 +25,6 @@ export function CloseLottery() {
   const {
     success: participantCountSuccess,
     error: participantCountError,
-    errorMessage: participantCountErrorMessage,
     fetching: participantCountFetching,
     data: participantCount,
   } = useLotteryContractRead({
@@ -103,7 +102,6 @@ export function CloseLottery() {
         {readError && !readSuccess && !readFetching && (
           <Alert status="error">No Data</Alert>
         )}{" "}
-        {readFetching && <Skeleton height={50} />}
       </StatNumber>
       {readSuccess && <StatHelpText>{label}</StatHelpText>}
 

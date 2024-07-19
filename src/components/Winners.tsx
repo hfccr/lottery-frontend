@@ -30,7 +30,7 @@ export function Winners() {
   }
   return (
     <>
-      {fetching && winners === null && <Skeleton height={400} />}
+      {/* {fetching && winners === null && <Skeleton height={400} />} */}
       {success && Array.isArray(winnersArray) && winnersArray.length > 0 && (
         <VStack align="flex-start" spacing={2}>
           <Heading as="h5" size="md">
