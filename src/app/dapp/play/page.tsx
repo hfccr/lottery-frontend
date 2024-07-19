@@ -13,6 +13,7 @@ import {
   Container,
   Box,
 } from "@chakra-ui/react";
+import Image from "next/image";
 
 export default function Play() {
   return (
@@ -26,7 +27,16 @@ export default function Play() {
           align="center"
           spacing={2}
         >
-          <Heading>Play</Heading>
+          <HStack align="center">
+            <Image
+              src="/hero.svg"
+              alt="Lottery Play Logo"
+              width={42}
+              height={42}
+              priority
+            />
+            <Heading>Play</Heading>
+          </HStack>
           <Reset />
         </Stack>
         <Divider />
