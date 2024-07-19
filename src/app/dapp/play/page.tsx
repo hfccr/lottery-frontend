@@ -1,5 +1,6 @@
 "use client";
 
+import { ClaimPrize } from "@/components/ClaimPrize";
 import { CloseLottery } from "@/components/CloseLottery";
 import { Participants } from "@/components/Participants";
 import { Participate } from "@/components/Participate";
@@ -26,6 +27,7 @@ export default function Play() {
       <CloseLottery />
       <Text>Winners</Text>
       <Winners />
+      <ClaimPrize />
     </>
   );
 }
