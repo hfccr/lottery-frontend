@@ -9,29 +9,25 @@ export function Winners() {
     success,
     error,
     errorMessage,
-    data: participants,
+    data: winners,
   } = useLotteryContractRead({
     methodName: "getWinners",
     methodParams: [],
     watch: true,
   });
   // Add type annotation for participants
-  let participantsArray: `0x{string}`[] = [];
-  if (participants) {
-    participantsArray = participants as `0x{string}`[];
+  let winnersArray: `0x{string}`[] = [];
+  if (winners) {
+    winnersArray = winners as `0x{string}`[];
   }
   return (
     <>
-      {fetching && participants === null && <Skeleton height={400} />}
+      {fetching && winners === null && <Skeleton height={400} />}
       {success && (
         <List spacing={4}>
-          {Array.isArray(participantsArray) &&
-            participantsArray.map((participant: `0x{string}`) => (
-              <Addreth
-                key={participant}
-                address={participant}
-                icon="identicon"
-              />
+          {Array.isArray(winnersArray) &&
+            winnersArray.map((winner: `0x{string}`) => (
+              <Addreth key={winner} address={winner} icon="identicon" />
             ))}
           <ListItem></ListItem>
         </List>
