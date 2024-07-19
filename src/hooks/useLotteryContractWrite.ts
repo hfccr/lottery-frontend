@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ethers, parseEther } from "ethers";
 import Lottery from "@/contracts/Lottery.json";
-import Deployments from "@/contracts/deployedAddresses.json";
+import { lotteryContractAddress } from "@/contracts/deployment";
 import { BrowserProvider } from "ethers";
 import {
   useWeb3ModalAccount,
@@ -15,7 +15,6 @@ interface ContractWriteProps {
 }
 
 const useLotteryContractWrite = () => {
-  const { Lottery: lotteryContractAddress } = Deployments;
   const { abi } = Lottery;
   const { address, chainId, isConnected } = useWeb3ModalAccount();
   const { walletProvider } = useWeb3ModalProvider();

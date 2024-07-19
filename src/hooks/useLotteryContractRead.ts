@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { BrowserProvider } from "ethers";
 import Lottery from "@/contracts/Lottery.json";
-import Deployments from "@/contracts/deployedAddresses.json";
+import { lotteryContractAddress } from "@/contracts/deployment";
 import {
   useWeb3ModalAccount,
   useWeb3ModalProvider,
@@ -22,7 +22,6 @@ const useLotteryContractRead = ({
   methodParams = [],
   watch = false,
 }: UseLotteryContractReadProps) => {
-  const { Lottery: lotteryContractAddress } = Deployments;
   const { abi } = Lottery;
   const { address, chainId, isConnected } = useWeb3ModalAccount();
   const { walletProvider } = useWeb3ModalProvider();

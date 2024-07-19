@@ -4,15 +4,16 @@ import { createWeb3Modal, defaultConfig } from "@web3modal/ethers/react";
 
 // Your WalletConnect Cloud project ID
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID!;
+const env = process.env.NODE_ENV;
 
 // 2. Set chains
-// const sepolia = {
-//   chainId: 11155111,
-//   name: "Sepolia test network",
-//   currency: "SepoliaETH",
-//   explorerUrl: "https://sepolia.etherscan.io",
-//   rpcUrl: "https://sepolia.drpc.org	",
-// };
+const sepolia = {
+  chainId: 11155111,
+  name: "Sepolia test network",
+  currency: "SepoliaETH",
+  explorerUrl: "https://sepolia.etherscan.io",
+  rpcUrl: "https://sepolia.drpc.org	",
+};
 
 const hardhat = {
   chainId: 31337,
@@ -43,7 +44,7 @@ const ethersConfig = defaultConfig({
   defaultChainId: 1, // used for the Coinbase SDK
 });
 
-const chains = [hardhat];
+const chains = env === "development" ? [hardhat] : [sepolia];
 
 export const isValidChain = (chainId: number | undefined) => {
   return chains.some((chain) => chain.chainId === chainId);
