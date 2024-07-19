@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Lottery
 
-## Getting Started
+This is a lottery dApp that allows users to participate in an Ethereum lottery where more than one participants are chosen from the set of participants for prizes.
 
-First, run the development server:
+## Local Development
+
+Since developing this project depends on a hardhat node running the lottery contract, clone the contracts repo and run the `npx hardhat node` command and deploy the Lottery contract on the local node.
+
+Then, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## dApp Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. Connect your wallet
+![connect](docs/connect.png)
+2. Navigate to the Play route
+![play route](docs/play.png)
+3. Click on Participate and pay 0.000015 ETH.
+![participate](docs/participate.png)
+4. Wait for at least 4 other participants. You can switch accounts and participate with other accounts.
+![min participants reached](docs/drawEnabled.png)
+5. Draw the lottery to assign winners.
+![draw](docs/draw.png)
+6. Once drawn, the winners are announced.
+![winners](docs/winners.png)
+7. In case you are a winner, you can claim your prize. First prize winner is assigned 60 percent of the prize pool and second prize winner is assigned 40 percent of the prize pool.
+![claim](docs/claim.png)
+8. You can reset the lottery state by clicking on the reset lottery button at any time to test various scenarios. Note that unclaimed prizes are carried forward in case the state is reset which adds to the funds of next claims.
+![reset](docs/reset.png)
 
-## Learn More
+## Info
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+* Minimal usage of Tailwind CSS as most of the styling is done using emotion Chakra's latest version
+* No usage of `React Hook Form` because all interactions are just button clicks.
+* Ethers have been converted to hooks without using wagmi.
