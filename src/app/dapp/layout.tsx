@@ -24,7 +24,7 @@ export default function DappLayout({
   const wrongChain = !isValidChain(chainId);
   const promptSwitch = isConnected && wrongChain;
   return (
-    <Container sx={{ marginTop: 0 }} maxWidth="lg">
+    <Container maxW="3xl">
       {!isConnected && hydrated && (
         <Alert status="info">
           <AlertIcon />
@@ -40,7 +40,7 @@ export default function DappLayout({
         </Alert>
       )}
       {!hydrated && (
-        <Container maxWidth="md">
+        <Container maxW="md">
           <VStack spacing={0}>
             <Skeleton height={50} />
             <Skeleton height={400} />
