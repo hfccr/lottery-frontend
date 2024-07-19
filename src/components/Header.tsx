@@ -9,6 +9,7 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
+  Heading,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import NextLink from "next/link";
@@ -51,7 +52,7 @@ export function Header() {
 
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
+      <Box px={4}>
         <Flex h={24} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
             size={"md"}
@@ -76,7 +77,7 @@ export function Header() {
             >
               {Links.map((link) => (
                 <NavLink key={link.href} href={link.href}>
-                  {link.label}
+                  <Heading>{link.label}</Heading>
                 </NavLink>
               ))}
             </HStack>

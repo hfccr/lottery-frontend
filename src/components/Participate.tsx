@@ -79,7 +79,7 @@ export function Participate() {
     maxParticipantsFetching ||
     lotteryOpenFetching;
   let participationEnabled = true;
-  let label = "0.000015 ETH For Participation";
+  let label = "0.000015 ETH Required";
   let participantHelperText;
   if (success && participantCount !== null && maxParticipants !== null) {
     if (!lotteryOpen) {
