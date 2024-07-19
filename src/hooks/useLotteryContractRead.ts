@@ -7,8 +7,9 @@ import {
   useWeb3ModalAccount,
   useWeb3ModalProvider,
 } from "@web3modal/ethers/react";
+import useBlockNumber from "./useBlockNumber";
 
-const interval = 20000;
+const interval = 5000;
 
 interface UseLotteryContractReadProps {
   methodName: string;
@@ -25,6 +26,7 @@ const useLotteryContractRead = ({
   const { abi } = Lottery;
   const { address, chainId, isConnected } = useWeb3ModalAccount();
   const { walletProvider } = useWeb3ModalProvider();
+  const blockNumber = useBlockNumber();
   const [read, setRead] = useState({
     fetching: false,
     error: false,
@@ -35,10 +37,10 @@ const useLotteryContractRead = ({
 
   useEffect(() => {
     const readLottery = async () => {
-      setRead({
+      setRead((read) => ({
         ...read,
         fetching: true,
-      });
+      }));
       try {
         if (!isConnected || !walletProvider) throw Error("User disconnected");
         const ethersProvider = new BrowserProvider(walletProvider);
@@ -66,11 +68,7 @@ const useLotteryContractRead = ({
       }
     };
     readLottery();
-    if (watch) {
-      const id = setInterval(readLottery, interval);
-      return () => clearInterval(id);
-    }
-  }, [address, chainId, isConnected, abi, lotteryContractAddress]);
+  }, [address, chainId, isConnected, blockNumber]);
 
   return read;
 };
