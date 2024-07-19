@@ -1,7 +1,15 @@
 "use client";
 import useLotteryContractRead from "@/hooks/useLotteryContractRead";
 import useLotteryContractWrite from "@/hooks/useLotteryContractWrite";
-import { Alert, Button, Skeleton } from "@chakra-ui/react";
+import {
+  Alert,
+  Button,
+  Skeleton,
+  Stat,
+  StatHelpText,
+  StatLabel,
+  StatNumber,
+} from "@chakra-ui/react";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 import { ethers } from "ethers";
 
@@ -73,26 +81,32 @@ export function ClaimPrize() {
   const { write, writeStatus } = useLotteryContractWrite();
   const { fetching: writing, success: writeSuccess } = writeStatus;
   return (
-    <>
-      {readSuccess && (
-        <Button
-          onClick={() => {
-            write({
-              methodName: "transferPrize",
-              methodParams: [],
-              amount: "",
-            });
-          }}
-          isLoading={writing}
-          isDisabled={!prizeClaimEnabled}
-        >
-          {label}
-        </Button>
-      )}{" "}
-      {readError && !readSuccess && !readFetching && (
-        <Alert status="error">Failed to read prize data</Alert>
-      )}{" "}
-      {readFetching && <Skeleton height={50} />}
-    </>
+    <Stat size="lg">
+      <StatLabel>Claim Prize</StatLabel>
+      <StatNumber>
+        {readSuccess && (
+          <Button
+            marginTop={1}
+            marginBottom={1}
+            onClick={() => {
+              write({
+                methodName: "transferPrize",
+                methodParams: [],
+                amount: "",
+              });
+            }}
+            isLoading={writing}
+            isDisabled={!prizeClaimEnabled}
+          >
+            Claim Prize
+          </Button>
+        )}{" "}
+        {readError && !readSuccess && !readFetching && (
+          <Alert status="error">Failed to read prize data</Alert>
+        )}{" "}
+        {readFetching && <Skeleton height={50} />}
+      </StatNumber>
+      {readSuccess && <StatHelpText>{label}</StatHelpText>}
+    </Stat>
   );
 }

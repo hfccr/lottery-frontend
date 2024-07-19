@@ -1,6 +1,14 @@
 "use client";
 import useLotteryContractRead from "@/hooks/useLotteryContractRead";
-import { List, ListItem, ListIcon, Skeleton, Alert } from "@chakra-ui/react";
+import {
+  List,
+  ListItem,
+  Skeleton,
+  Alert,
+  Heading,
+  Divider,
+  VStack,
+} from "@chakra-ui/react";
 import { Addreth } from "addreth/no-wagmi";
 
 export function Participants() {
@@ -22,23 +30,33 @@ export function Participants() {
   }
   return (
     <>
-      {fetching && participants === null && <Skeleton height={400} />}
-      {success && (
-        <List spacing={4}>
-          {Array.isArray(participantsArray) &&
-            participantsArray.map((participant: `0x{string}`) => (
-              <Addreth
-                key={participant}
-                address={participant}
-                icon="identicon"
-              />
-            ))}
-          <ListItem></ListItem>
-        </List>
-      )}
-      {error && !fetching && !success && (
-        <Alert status="error">{errorMessage}</Alert>
-      )}
+      <VStack align="flex-start" spacing={2}>
+        {/* {fetching && participants === null && <Skeleton height={400} />} */}
+        {success && participantsArray.length > 0 && (
+          <>
+            <Heading as="h5" size="md">
+              Players
+            </Heading>
+            <Divider />
+            <List spacing={4}>
+              {Array.isArray(participantsArray) &&
+                participantsArray.map((participant: `0x{string}`) => (
+                  <div key={participant}>
+                    <Addreth
+                      key={participant}
+                      address={participant}
+                      icon="identicon"
+                    />
+                  </div>
+                ))}
+              <ListItem></ListItem>
+            </List>
+          </>
+        )}
+        {error && !fetching && !success && (
+          <Alert status="error">{errorMessage}</Alert>
+        )}
+      </VStack>
     </>
   );
 }

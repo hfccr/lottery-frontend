@@ -2,8 +2,22 @@
 
 import useLotteryContractRead from "@/hooks/useLotteryContractRead";
 import useLotteryContractWrite from "@/hooks/useLotteryContractWrite";
-import { Alert, Button, Skeleton } from "@chakra-ui/react";
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  CardBody,
+  Skeleton,
+  Stat,
+  StatGroup,
+  StatHelpText,
+  StatLabel,
+  StatNumber,
+} from "@chakra-ui/react";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react";
+import { CloseLottery } from "./CloseLottery";
+import { ClaimPrize } from "./ClaimPrize";
 
 export function Participate() {
   const { address } = useWeb3ModalAccount();
@@ -64,8 +78,9 @@ export function Participate() {
     participantCountFetching ||
     maxParticipantsFetching ||
     lotteryOpenFetching;
-  let participationEnabled = false;
-  let label = "";
+  let participationEnabled = true;
+  let label = "0.000015 ETH For Participation";
+  let participantHelperText;
   if (success && participantCount !== null && maxParticipants !== null) {
     if (!lotteryOpen) {
       participationEnabled = false;
@@ -77,25 +92,60 @@ export function Participate() {
       participationEnabled = false;
       label = "Max Participants Reached";
     }
+    participantHelperText = lotteryOpen
+      ? participantCount + "/" + maxParticipants + " Participants"
+      : "No Prizes";
   }
   return (
     <>
-      Is already participating : {isAlreadyParticipating + ""}
-      Current Participants : {participantCount + ""} / {maxParticipants + ""}
       {success && (
-        <Button
-          onClick={() => {
-            write({
-              methodName: "enter",
-              methodParams: [],
-              amount: "0.000015",
-            });
-          }}
-          isDisabled={!participationEnabled}
-          isLoading={writing}
-        >
-          {label}
-        </Button>
+        <Card variant="outlined" width="100%" marginTop={2} marginBottom={2}>
+          <CardBody>
+            <StatGroup width="100%">
+              <Stat size="lg">
+                <StatLabel>
+                  {lotteryOpen ? "Participants" : "Players"}
+                </StatLabel>
+                <StatNumber fontSize="xx-large">
+                  {"" + participantCount}
+                </StatNumber>
+                <StatHelpText>{participantHelperText}</StatHelpText>
+              </Stat>
+              {lotteryOpen && (
+                <Stat size="lg">
+                  <StatLabel>Play</StatLabel>
+                  <StatNumber>
+                    <Button
+                      marginTop={1}
+                      marginBottom={1}
+                      onClick={() => {
+                        write({
+                          methodName: "enter",
+                          methodParams: [],
+                          amount: "0.000015",
+                        });
+                      }}
+                      isDisabled={!participationEnabled}
+                      isLoading={writing}
+                    >
+                      Participate
+                    </Button>
+                  </StatNumber>
+                  <StatHelpText>{label}</StatHelpText>
+                </Stat>
+              )}
+              {!lotteryOpen && (
+                <Stat size="lg">
+                  <StatLabel>Winners</StatLabel>
+                  <StatNumber fontSize="xx-large">2</StatNumber>
+                  <StatHelpText>Won Prizes</StatHelpText>
+                </Stat>
+              )}
+              {lotteryOpen && <CloseLottery />}
+              {!lotteryOpen && <ClaimPrize />}
+            </StatGroup>
+          </CardBody>
+        </Card>
       )}{" "}
       {error && <Alert status="error">Failed to get participant data</Alert>}{" "}
       {fetching && !success && !error && <Skeleton height="20px" />}

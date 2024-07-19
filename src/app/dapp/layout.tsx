@@ -1,14 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react";
-import {
-  Container,
-  Skeleton,
-  VStack,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-} from "@chakra-ui/react";
+import { Container, Alert, AlertIcon, AlertTitle } from "@chakra-ui/react";
 import { isValidChain } from "@/context/Web3Modal";
 
 export default function DappLayout({
@@ -38,14 +31,6 @@ export default function DappLayout({
           <AlertTitle>Invalid Network</AlertTitle>
           Switch network to continue
         </Alert>
-      )}
-      {!hydrated && (
-        <Container maxW="md">
-          <VStack spacing={0}>
-            <Skeleton height={50} />
-            <Skeleton height={400} />
-          </VStack>
-        </Container>
       )}
       {isConnected && !wrongChain && hydrated && <>{children}</>}
     </Container>

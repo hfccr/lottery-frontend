@@ -1,11 +1,27 @@
 "use client";
+import React from "react";
 import useLotteryContractRead from "@/hooks/useLotteryContractRead";
 import useLotteryContractWrite from "@/hooks/useLotteryContractWrite";
-import { Alert, Button, Skeleton } from "@chakra-ui/react";
-import { useWeb3ModalAccount } from "@web3modal/ethers/react";
+import {
+  Alert,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
+  Button,
+  Skeleton,
+  Stat,
+  StatHelpText,
+  StatLabel,
+  StatNumber,
+  useDisclosure,
+} from "@chakra-ui/react";
 
 export function CloseLottery() {
-  const { address } = useWeb3ModalAccount();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = React.useRef<HTMLButtonElement>(null);
   const {
     success: participantCountSuccess,
     error: participantCountError,
@@ -62,10 +78,7 @@ export function CloseLottery() {
       minParticipants !== null &&
       participantCount < minParticipants
     ) {
-      label =
-        minParticipants -
-        participantCount +
-        " More Participants Needed To Draw";
+      label = minParticipants - participantCount + " More Participants Needed";
       lotteryCloseEnabled = false;
     }
   }
@@ -73,27 +86,66 @@ export function CloseLottery() {
   const { write, writeStatus } = useLotteryContractWrite();
   const { fetching: writing, success: writeSuccess } = writeStatus;
   return (
-    <>
-      {readSuccess && (
-        <Button
-          onClick={() => {
-            console.log("Writing end lottery");
-            write({
-              methodName: "endLottery",
-              methodParams: [],
-              amount: "",
-            });
-          }}
-          isLoading={writing}
-          isDisabled={!lotteryCloseEnabled}
-        >
-          {label}
-        </Button>
-      )}{" "}
-      {readError && !readSuccess && !readFetching && (
-        <Alert status="error">Failed to read participant data</Alert>
-      )}{" "}
-      {readFetching && <Skeleton height={50} />}
-    </>
+    <Stat size="lg">
+      <StatLabel>Draw Lottery</StatLabel>
+      <StatNumber>
+        {readSuccess && (
+          <Button
+            marginTop={1}
+            marginBottom={1}
+            onClick={onOpen}
+            isLoading={writing}
+            isDisabled={!lotteryCloseEnabled}
+          >
+            Draw Lottery
+          </Button>
+        )}{" "}
+        {readError && !readSuccess && !readFetching && (
+          <Alert status="error">No Data</Alert>
+        )}{" "}
+        {readFetching && <Skeleton height={50} />}
+      </StatNumber>
+      {readSuccess && <StatHelpText>{label}</StatHelpText>}
+
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Draw Lottery
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure? This contract call will draw the lottery and select
+              winners randomly from the participants. This can be called by any
+              user.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button
+                colorScheme="green"
+                onClick={() => {
+                  write({
+                    methodName: "endLottery",
+                    methodParams: [],
+                    amount: "",
+                  });
+                  onClose();
+                }}
+                ml={3}
+              >
+                Draw Lottery
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    </Stat>
   );
 }
